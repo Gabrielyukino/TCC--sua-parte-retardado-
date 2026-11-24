@@ -123,16 +123,89 @@ body{
         font-size:28px;
     }
 }
+
+/* ===== MELHORIAS VISUAIS E ANIMAÇÕES ===== */
+.pagina {
+    align-items: center;
+    overflow: hidden;
+    animation: aparecerPagina .7s ease both;
+}
+.coluna-imagem {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    flex-shrink: 0;
+}
+#imagemLivro {
+    display: block;
+    width: 100%;
+    transition: transform .55s ease, filter .55s ease;
+    transform-origin: center;
+}
+#imagemLivro:hover { transform: scale(1.025); filter: brightness(1.06); }
+.texto { min-width: 0; }
+.texto h1 { animation: textoEntrando .65s .08s both; }
+.texto p { animation: textoEntrando .75s .16s both; }
+.numero-pagina { animation: textoEntrando .8s .24s both; }
+.pagina.animar .coluna-imagem { animation: imagemEntrando .65s ease both; }
+.pagina.animar .texto h1 { animation: textoEntrando .55s .10s both; }
+.pagina.animar .texto p { animation: textoEntrando .65s .18s both; }
+.pagina.animar .numero-pagina { animation: textoEntrando .7s .25s both; }
+.botao-inicio {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 11px 20px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255,255,255,.92);
+    color: #303030;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(0,0,0,.13);
+    transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.botao-inicio:hover {
+    transform: translateY(-3px);
+    background: #fff;
+    box-shadow: 0 8px 18px rgba(0,0,0,.18);
+}
+.botao-inicio:active { transform: scale(.96); }
+.seta { transition: transform .25s ease, filter .25s ease, box-shadow .25s ease; }
+.seta:hover { transform: translateY(-4px) scale(1.08); filter: brightness(1.08); box-shadow: 0 8px 16px rgba(0,0,0,.18); }
+.seta:active { transform: scale(.92); }
+.seta:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+@keyframes aparecerPagina { from { opacity: 0; transform: translateY(18px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes imagemEntrando { from { opacity: 0; transform: translateX(-22px) scale(.97); } to { opacity: 1; transform: translateX(0) scale(1); } }
+@keyframes textoEntrando { from { opacity: 0; transform: translateY(13px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width:768px) {
+    .coluna-imagem { width: 100%; align-items: center; }
+    #imagemLivro { width: 100%; }
+    .botao-inicio { align-self: center; }
+    .pagina.animar .coluna-imagem { animation-name: imagemEntrandoMobile; }
+}
+@keyframes imagemEntrandoMobile { from { opacity: 0; transform: translateY(-15px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
 </style>
 </head>
 <body>
-    <button onclick="window.close()">Voltar</button>
+    
 
 <div class="livro">
 
     <div class="pagina">
 
-        <img id="imagemLivro" src="" alt="Imagem do Livro">
+        <div class="coluna-imagem">
+            <img id="imagemLivro" src="" alt="Ilustração da história">
+            <a class="botao-inicio" href="index.html" aria-label="Voltar para a página inicial">⌂ <span>Voltar ao início</span></a>
+        </div>
 
         <div class="texto">
             <h1 id="titulo"></h1>
@@ -182,6 +255,10 @@ const paginas = [
 let paginaAtual = 0;
 
 function atualizarPagina(){
+    const painel = document.querySelector('.pagina');
+    painel.classList.remove('animar');
+    void painel.offsetWidth; // Reinicia a animação a cada troca de página.
+    painel.classList.add('animar');
 
     document.getElementById("titulo").textContent =
         paginas[paginaAtual].titulo;
@@ -194,6 +271,11 @@ function atualizarPagina(){
 
     document.getElementById("numeroPagina").textContent =
         `Página ${paginaAtual + 1} de ${paginas.length}`;
+    const botoes = document.querySelectorAll('.controles .seta');
+    if (botoes.length >= 2) {
+        botoes[0].disabled = paginaAtual === 0;
+        botoes[1].disabled = paginaAtual === paginas.length - 1;
+    }
 }
 
 function proximaPagina(){

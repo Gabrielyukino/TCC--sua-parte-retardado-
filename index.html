@@ -17,7 +17,24 @@
               min-height: 100vh;            /* Garante que o fundo ocupe 100% da altura da tela */
               margin: 0;                    /* Remove bordas brancas padrão do navegador */
             }
-          </style>
+          
+/* Animações da página inicial */
+.container { perspective: 1000px; }
+.card { animation: cardEntrada .65s both; transition: transform .35s ease, box-shadow .35s ease; }
+.card:nth-child(2) { animation-delay: .08s; }
+.card:nth-child(3) { animation-delay: .16s; }
+.card:nth-child(4) { animation-delay: .24s; }
+.card:nth-child(5) { animation-delay: .32s; }
+.card:nth-child(6) { animation-delay: .40s; }
+.card:hover { transform: translateY(-9px) scale(1.025); box-shadow: 0 12px 28px rgba(0,0,0,.17); }
+.card-image { transition: transform .5s ease; }
+.card:hover .card-image { transform: scale(1.06); }
+.card-button { transition: transform .25s ease, background-color .25s ease, box-shadow .25s ease; }
+.card-button:hover { transform: translateY(-2px); box-shadow: 0 5px 12px rgba(0,0,0,.15); }
+@keyframes cardEntrada { from { opacity: 0; transform: translateY(24px) rotateX(5deg); } to { opacity: 1; transform: translateY(0) rotateX(0); } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+</style>
     <style>
         /* Estilo do cabeçalho onde a logo vai ficar */
         .header-container {
