@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Livro Infantil - Os Três Porquinhos</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#f0f0f0;
+    font-family:Arial, sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    padding:15px;
+}
+
+.livro{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:20px;
+    width:100%;
+}
+
+.pagina{
+    width:100%;
+    max-width:900px;
+    background:#f2bedb;
+    border-radius:30px;
+    padding:25px;
+    display:flex;
+    gap:25px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.15);
+}
+
+#imagemLivro{
+    width:50%;
+    max-height:400px;
+    object-fit:cover;
+    border-radius:20px;
+}
+
+.texto{
+    width:50%;
+}
+
+.texto h1{
+    margin-bottom:15px;
+    font-size:32px;
+}
+
+.texto p{
+    font-size:22px;
+    line-height:1.6;
+}
+
+.numero-pagina{
+    margin-top:20px;
+    color:#555;
+    font-size:15px;
+}
+
+.controles{
+    display:flex;
+    gap:20px;
+}
+
+.seta{
+    width:70px;
+    height:70px;
+    border:none;
+    border-radius:50%;
+    background:#ff92d5;
+    font-size:32px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.seta:hover{
+    transform:scale(1.1);
+}
+
+/* CELULAR */
+@media (max-width:768px){
+
+    .pagina{
+        flex-direction:column;
+        padding:20px;
+    }
+
+    #imagemLivro{
+        width:100%;
+        max-height:250px;
+    }
+
+    .texto{
+        width:100%;
+    }
+
+    .texto h1{
+        text-align:center;
+        font-size:26px;
+    }
+
+    .texto p{
+        font-size:18px;
+    }
+
+    .seta{
+        width:60px;
+        height:60px;
+        font-size:28px;
+    }
+}
+</style>
+</head>
+<body>
+    <button onclick="window.close()">Voltar</button>
+
+<div class="livro">
+
+    <div class="pagina">
+
+        <img id="imagemLivro" src="" alt="Imagem do Livro">
+
+        <div class="texto">
+            <h1 id="titulo"></h1>
+            <p id="conteudo"></p>
+            <div class="numero-pagina" id="numeroPagina"></div>
+        </div>
+
+    </div>
+
+    <div class="controles">
+        <button class="seta" onclick="paginaAnterior()">⬅</button>
+        <button class="seta" onclick="proximaPagina()">➡</button>
+    </div>
+
+</div>
+
+<script>
+
+const paginas = [
+
+{
+    titulo: "Os Três Porquinhos",
+    imagem: "https://i.imgur.com/kBp9Vsu.png",
+    conteudo: "Três porquinhos cresceram e decidiram construir suas próprias casas para viverem sozinhos e em segurança."
+},
+
+{
+    titulo: "Página 2",
+    imagem: "https://i.imgur.com/BF9wvFZ.png",
+    conteudo: "O primeiro porquinho construiu uma casa de palha. O segundo fez uma casa de madeira. O terceiro trabalhou bastante e construiu uma casa de tijolos."
+},
+
+{
+    titulo: "Página 3",
+    imagem: "https://i.imgur.com/FfpltdP.pngs",
+    conteudo: "Um lobo apareceu procurando os porquinhos. Com um grande sopro, derrubou a casa de palha e depois a de madeira."
+},
+
+{
+    titulo: "Página 4",
+    imagem: "https://i.imgur.com/jRmCQtX.png",
+    conteudo: "Os porquinhos correram para a casa de tijolos. O lobo tentou derrubá-la, mas não conseguiu. Cansado, foi embora e os três viveram felizes para sempre."
+}
+
+];
+
+let paginaAtual = 0;
+
+function atualizarPagina(){
+
+    document.getElementById("titulo").textContent =
+        paginas[paginaAtual].titulo;
+
+    document.getElementById("conteudo").textContent =
+        paginas[paginaAtual].conteudo;
+
+    document.getElementById("imagemLivro").src =
+        paginas[paginaAtual].imagem;
+
+    document.getElementById("numeroPagina").textContent =
+        `Página ${paginaAtual + 1} de ${paginas.length}`;
+}
+
+function proximaPagina(){
+
+    if(paginaAtual < paginas.length - 1){
+        paginaAtual++;
+        atualizarPagina();
+    }
+}
+
+function paginaAnterior(){
+
+    if(paginaAtual > 0){
+        paginaAtual--;
+        atualizarPagina();
+    }
+}
+
+atualizarPagina();
+
+</script>
+
+</body>
+</html>

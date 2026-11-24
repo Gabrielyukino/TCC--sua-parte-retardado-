@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Livro Infantil - João e Maria</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#f0f0f0;
+    font-family:Arial, sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    padding: 15px;
+}
+
+.livro{
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    gap:20px;
+    width: 100%;
+    max-width: 900px;
+}
+
+.pagina{
+    width:100%;
+    min-height:500px;
+    background:#fa93cc;
+    border-radius:30px;
+    padding:25px;
+    display:flex;
+    flex-direction: row;
+    gap:30px;
+    align-items: center;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+#imagemLivro{
+    width:50%;
+    max-height:400px;
+    object-fit:cover;
+    border-radius:20px;
+}
+
+.texto{
+    width:50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.texto h1{
+    margin-bottom:15px;
+    font-size:32px;
+    color: #333;
+}
+
+.texto p{
+    font-size:18px;
+    line-height:1.5;
+    color: #444;
+}
+
+.numero-pagina{
+    margin-top:20px;
+    font-size:14px;
+    color:#555;
+    font-weight: bold;
+}
+
+.controles {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    width: 100%;
+}
+
+.seta{
+    width:70px;
+    height:70px;
+    border:none;
+    border-radius:50%;
+    background:#fc6279;
+    font-size:32px;
+    cursor:pointer;
+    transition:0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.seta:active {
+    transform: scale(0.9);
+}
+
+/* 📱 ADAPTAÇÃO PARA CELULARES (Telas menores que 768px) */
+@media (max-width: 768px) {
+    .pagina {
+        flex-direction: column; /* Transforma o layout em vertical */
+        min-height: auto;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    #imagemLivro {
+        width: 100%; /* Imagem ocupa a largura total no celular */
+        max-height: 250px;
+    }
+
+    .texto {
+        width: 100%; /* Texto ocupa a largura total no celular */
+        text-align: center;
+    }
+
+    .texto h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .texto p {
+        font-size: 16px;
+    }
+    
+    .seta {
+        width: 60px;
+        height: 60px;
+        font-size: 26px;
+    }
+}
+</style>
+</head>
+<body>
+    <button onclick="window.close()">Voltar</button>
+
+<div class="livro">
+
+    <div class="pagina">
+        <img id="imagemLivro" src="" alt="Imagem do Livro">
+
+        <div class="texto">
+            <h1 id="titulo"></h1>
+            <p id="conteudo"></p>
+            <div class="numero-pagina" id="numeroPagina"></div>
+        </div>
+    </div>
+
+    <!-- Botões agrupados abaixo do livro para melhor usabilidade no celular -->
+    <div class="controles">
+        <button class="seta" onclick="paginaAnterior()">⬅</button>
+        <button class="seta" onclick="proximaPagina()">➡</button>
+    </div>
+
+</div>
+
+<script>
+
+const paginas = [
+    {
+        titulo: "João e Maria",
+        imagem: "https://i.imgur.com/f9IdwOR.jpeg",
+        conteudo: "João e Maria são abandonados na floresta pela madrasta e pelo pai devido à extrema pobreza. Na primeira tentativa, João usa pedrinhas brilhantes para marcar o caminho e eles conseguem voltar para casa."
+    },
+    {
+        titulo: "Página 2",
+        imagem: "https://i.imgur.com/Qhedz68.jpeg",
+        conteudo: "Na segunda vez, impedido de pegar as pedras, João usa migalhas de pão. Os pássaros comem as migalhas, deixando os irmãos perdidos, famintos e exaustos na mata."
+    },
+    {
+        titulo: "Página 3",
+        imagem: "https://i.imgur.com/gNqshCi.png",
+        conteudo: "Eles encontram uma casa feita de doces e são acolhidos por uma idosa que, na verdade, é uma bruxa canibal. Ela prende João em uma gaiola para engordá-lo e força Maria a fazer os trabalhos domésticos."
+    },
+    {
+        titulo: "Página 4",
+        imagem: "https://i.imgur.com/xlvYJiR.png",
+        conteudo: "Após semanas enganando a bruxa, ela decide assar João. Espertamente, Maria empurra a bruxa para dentro do forno aceso. Os irmãos libertam-se, pegam os tesouros da casa e encontram o caminho de volta para o pai, que os recebe com alegria e sem a madrasta má."
+    }
+];
+
+let paginaAtual = 0;
+
+function atualizarPagina(){
+    document.getElementById("titulo").textContent = paginas[paginaAtual].titulo;
+    document.getElementById("conteudo").textContent = paginas[paginaAtual].conteudo;
+    document.getElementById("imagemLivro").src = paginas[paginaAtual].imagem;
+    document.getElementById("numeroPagina").textContent = `Página ${paginaAtual + 1} de ${paginas.length}`;
+    
+    // Rola a página para o topo suavemente ao mudar de página (bom para telas pequenas)
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function proximaPagina(){
+    if(paginaAtual < paginas.length - 1){
+        paginaAtual++;
+        atualizarPagina();
+    }
+}
+
+function paginaAnterior(){
+    if(paginaAtual > 0){
+        paginaAtual--;
+        atualizarPagina();
+    }
+}
+
+atualizarPagina();
+
+</script>
+
+</body>
+</html>
